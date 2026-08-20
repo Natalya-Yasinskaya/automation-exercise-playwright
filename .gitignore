@@ -1,0 +1,15 @@
+# Node dependencies
+node_modules/
+
+# Playwright artifacts
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Environment and IDE
+.env
+.DS_Store
+.idea/
+.vscode/
+*.local
