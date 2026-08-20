@@ -3,6 +3,7 @@ import { Page } from '@playwright/test';
 export class BasePage {
   readonly page: Page;
   protected url: string = '';
+  private static cookieHandlers = new WeakSet<Page>();
 
   constructor(page: Page) {
     this.page = page;
@@ -10,6 +11,9 @@ export class BasePage {
   }
 
   private setupConsentHandler() {
+    if (BasePage.cookieHandlers.has(this.page)) return;
+    BasePage.cookieHandlers.add(this.page);
+
     this.page.addLocatorHandler(
       this.page.locator('.fc-consent-root').first(),
       async (cookieBanner) => {

@@ -10,11 +10,11 @@ test.describe('UI: Корзина товаров', () => {
     await productsPage.goto();
     const addedProduct = await productsPage.addFirstProductToCart();
     await cartPage.goto();
-    const cartProduct = await cartPage.getFirstProductDetails();
+    const cartProduct = cartPage.getFirstProductDetails();
 
-    expect(cartProduct.name).toBe(addedProduct.name);
-    expect(cartProduct.price).toBe(addedProduct.price);
-    expect(cartProduct.quantity).toBe('1');
-    expect(cartProduct.total).toBe(addedProduct.price);
+    await expect(cartProduct.name).toHaveText(addedProduct.name);
+    await expect(cartProduct.price).toHaveText(addedProduct.price);
+    await expect(cartProduct.quantity).toHaveText('1');
+    await expect(cartProduct.total).toHaveText(addedProduct.price);
   });
 });

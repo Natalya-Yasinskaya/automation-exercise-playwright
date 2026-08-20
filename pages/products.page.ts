@@ -1,10 +1,9 @@
 import { BasePage } from './base.page';
-import { expect } from '@playwright/test';
 
 export class ProductsPage extends BasePage {
   protected override url = '/products';
 
-  readonly searchInput = this.page.locator('#search_product');
+  readonly searchInput = this.page.getByPlaceholder('Search Product');
   readonly searchButton = this.page.locator('#submit_search');
   readonly searchedProductsTitle = this.page.locator('.title.text-center');
   readonly productTitles = this.page.locator('.productinfo p');
@@ -18,25 +17,17 @@ export class ProductsPage extends BasePage {
   }
 
   async addFirstProductToCart() {
-    const name = (await this.firstProductCard.locator('.productinfo p').innerText()).trim();
-    const price = (await this.firstProductCard.locator('.productinfo h2').innerText()).trim();
+    const nameLocator = this.firstProductCard.locator('.productinfo p');
+    const priceLocator = this.firstProductCard.locator('.productinfo h2');
+
+    await nameLocator.waitFor({ state: 'visible' });
+
+    const name = (await nameLocator.innerText()).trim();
+    const price = (await priceLocator.innerText()).trim();
 
     await this.firstProductCard.locator('.productinfo .add-to-cart').click();
     await this.continueShoppingButton.click();
 
     return { name, price };
-  }
-
-  async expectSearchPageVisible() {
-    await expect(this.searchedProductsTitle).toHaveText('Searched Products');
-  }
-
-  async expectProductsContainKeyword(keyword: string) {
-    const productTitles = await this.productTitles.allTextContents();
-    expect(productTitles.length).toBeGreaterThan(0);
-
-    for (const title of productTitles) {
-      expect(title.toLowerCase()).toContain(keyword.toLowerCase());
-    }
   }
 }

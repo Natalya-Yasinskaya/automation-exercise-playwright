@@ -18,7 +18,8 @@ test.describe('UI + API: Авторизация пользователя', () =>
     await loginPage.goto();
     await loginPage.login(user.email, 'WrongPassword123!');
 
-    await loginPage.expectErrorMessage('Your email or password is incorrect!');
+    await expect(loginPage.errorMessage).toBeVisible();
+    await expect(loginPage.errorMessage).toHaveText('Your email or password is incorrect!');
   });
 
   test('Авторизация незарегистрированного пользователя', async ({ page }) => {
@@ -27,7 +28,8 @@ test.describe('UI + API: Авторизация пользователя', () =>
     await loginPage.goto();
     await loginPage.login('non_existent_user_99999@gmail.com', 'Password123!');
 
-    await loginPage.expectErrorMessage('Your email or password is incorrect!');
+    await expect(loginPage.errorMessage).toBeVisible();
+    await expect(loginPage.errorMessage).toHaveText('Your email or password is incorrect!');
   });
 
 });

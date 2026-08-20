@@ -6,6 +6,7 @@ export default defineConfig({
   reporter: 'html',
   use: {
     baseURL: process.env.BASE_URL || 'https://automationexercise.com',
+    testIdAttribute: 'data-qa',
     trace: 'on',
     screenshot: 'on',
     video: 'retain-on-failure',

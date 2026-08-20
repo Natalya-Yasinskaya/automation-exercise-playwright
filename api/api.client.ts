@@ -22,8 +22,10 @@ export class ApiClient {
   }
 
   async deleteAccount(email: string, password: string) {
-    await this.request.delete('/api/deleteAccount', {
+    const response = await this.request.delete('/api/deleteAccount', {
       form: { email, password },
     });
+    const body = await response.json();
+    expect(Number(body.responseCode)).toBe(200);
   }
 }

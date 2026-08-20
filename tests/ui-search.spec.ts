@@ -10,8 +10,16 @@ test.describe('UI: Поиск товара', () => {
     await productsPage.goto();
     await productsPage.searchProduct(searchQuery);
 
-    await productsPage.expectSearchPageVisible();
-    await productsPage.expectProductsContainKeyword(searchQuery);
+    await expect(productsPage.searchedProductsTitle).toHaveText('Searched Products');
+    await expect(productsPage.productTitles.first()).toBeVisible();
+
+    const productTitles = await productsPage.productTitles.allTextContents();
+    
+    expect(productTitles.length).toBeGreaterThan(0);
+
+    for (const title of productTitles) {
+      expect(title.toLowerCase()).toContain(searchQuery.toLowerCase());
+    }
   });
 
 });

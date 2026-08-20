@@ -6,7 +6,7 @@ test.describe('API: Список товаров', () => {
     const api = new ApiClient(request);
 
     const response = await api.getProductsList();
-    const body = JSON.parse(await response.text());
+    const body = await response.json();
     const firstProduct = body.products?.[0];
 
     expect(response.status()).toBe(200);
